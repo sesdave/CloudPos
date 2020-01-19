@@ -31,16 +31,16 @@ public class PosApplication extends Application {
         Log.i(TAG, "onCreate");
         this.mContext = getApplicationContext();
         mPosApplication = this;
-//        if (!MeraSystemService.initialize(this)) {
-//            Toast.makeText(this, "Failed to initialize device", Toast.LENGTH_LONG).show();
-//            HandlerUtils.postDelayedTask(new Runnable() {
-//                @Override
-//                public void run() {
-//                    ToasterUtils.showMessage(getApplicationContext(), "Trying to initialize system again");
-//                    System.out.println("Result: " + MeraSystemService.getInstance(getApplicationContext()).initialize());
-//                }
-//            }, 1000);
-//        }
+        if (!MeraSystemService.initialize(this)) {
+            Toast.makeText(this, "Failed to initialize device", Toast.LENGTH_LONG).show();
+            HandlerUtils.postDelayedTask(new Runnable() {
+                @Override
+                public void run() {
+                    ToasterUtils.showMessage(getApplicationContext(), "Trying to initialize system again");
+                    System.out.println("Result: " + MeraSystemService.getInstance(getApplicationContext()).initialize());
+                }
+            }, 1000);
+        }
     }
 
     public void onTerminate() {

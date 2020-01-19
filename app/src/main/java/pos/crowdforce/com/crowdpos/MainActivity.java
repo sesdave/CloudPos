@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        emvService = MeraEmvService.getInstance(this);
+
+        //emvService = MeraEmvService.getInstance(this);
 
         //pinInputDisplayHandler Handler
         Handler pinInputDisplayHandler = new Handler(Looper.getMainLooper()){
@@ -47,18 +48,26 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        EmvTransactionDetails emvTransactionDetails = mIsAuthenticated ? emvService.processTransaction(transactionAmount, new PinpadInputDisplay(pinInputDisplayHandler)) : emvService.getCardNo(transactionAmount);
-
-        if (emvTransactionDetails == null || emvTransactionDetails.getTransactionStatus() == EmvTransactionStatus.FAILED) {
-           // publishProgress("TransactionItem failed");
-        } else {
-            if (TextUtils.isEmpty(emvTransactionDetails.getPinblock()) && getContext() != null) {
-                //Mean offline pin was entered
-                //Call on the UI thread
-                //getActivity().runOnUiThread(() -> AlertDialogUtilites.showToast(getContext(), "PIN OK"));
-            }
-        }
+        /**
+         * Note that this is the major cause of the crash and not the application class
+         * You can do this here, it has to be done in a background thread
+         * You can extract all POS service functionality, like card, reading, detection and printing
+         * to a separate thread
+         */
+//        EmvTransactionDetails emvTransactionDetails = mIsAuthenticated ? emvService.processTransaction(transactionAmount, new PinpadInputDisplay(pinInputDisplayHandler)) : emvService.getCardNo(transactionAmount);
+//
+//        if (emvTransactionDetails == null || emvTransactionDetails.getTransactionStatus() == EmvTransactionStatus.FAILED) {
+//           // publishProgress("TransactionItem failed");
+//        } else {
+//            if (TextUtils.isEmpty(emvTransactionDetails.getPinblock()) && getContext() != null) {
+//                //Mean offline pin was entered
+//                //Call on the UI thread
+//                //getActivity().runOnUiThread(() -> AlertDialogUtilites.showToast(getContext(), "PIN OK"));
+//            }
+//        }
     }
+
+
     public void Printer(){
         PrinterService printerService = MeraPrinterService.getInstance(this);
         printerService.open();
